@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.medicore.app.models.Appointment;
+import com.medicore.app.models.ApptmType;
 import com.medicore.app.models.Patient;
 import com.medicore.app.repository.AppointmentRepository;
+import com.medicore.app.repository.ApptmTypeRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -20,6 +22,8 @@ import jakarta.transaction.Transactional;
 public class AppointmentService {
     @Autowired
     private AppointmentRepository repo; 
+    @Autowired
+    private ApptmTypeRepository apptmTypeRepo;
 
     @Transactional
     public boolean scheduleAppointment(Appointment toSchedule, Patient patient) {
@@ -33,6 +37,10 @@ public class AppointmentService {
          toSchedule.setPatient(patient);
 
          return true;
+    }
+
+    public List<ApptmType> getAppointmentsTypes() {
+        return apptmTypeRepo.findAll();
     }
 
     public static OffsetDateTime formatDateTime(LocalDate capturedDate, LocalTime time) {      
