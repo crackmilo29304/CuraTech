@@ -110,26 +110,26 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-light"><i class="bi bi-shield-lock text-muted"></i></span>
                                         </div>
-                                        <input type="text" class="form-control bg-light" value="1000123456" readonly>
+                                        <input type="text" class="form-control bg-light" th:value="${patient.getDocumentNumber()}" readonly>
                                     </div>
-                                    <small class="form-text text-muted">Campo no modificable.</small>
+                                    <small class="form-text text-muted">Campo no modificable.</small><
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label class="font-weight-bold small text-gray-700">Fecha de Nacimiento</label>
-                                    <input type="date" class="form-control" value="2000-01-15">
+                                    <input type="date" class="form-control" th:value="${patient.getBirthDate()}">
                                 </div>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label class="font-weight-bold small text-gray-700">Nombres</label>
-                                    <input type="text" class="form-control" placeholder="Ej. Carlos Alberto" value="Carlos Alberto">
+                                    <input type="text" class="form-control" th:value="${patient.getName()}">
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label class="font-weight-bold small text-gray-700">Apellidos</label>
-                                    <input type="text" class="form-control" placeholder="Ej. Gómez Ruiz" value="Gómez Ruiz">
+                                    <input type="text" class="form-control" th:value="${patient.getLastName()}">
                                 </div>
                             </div>
 
@@ -145,22 +145,20 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-white"><i class="bi bi-envelope text-purple"></i></span>
                                         </div>
-                                        <input type="email" class="form-control" placeholder="correo@ejemplo.com" value="carlos.gomez@ejemplo.com">
+                                        <input type="email" class="form-control" th:value="${patient.getEmail()}">
                                     </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label class="font-weight-bold small text-gray-700">Tipo de Sangre</label>
-                                    <select class="form-control">
-                                        <option value="">Seleccione...</option>
-                                        <option value="O+" selected>O+</option>
-                                        <option value="O-">O-</option>
-                                        <option value="A+">A+</option>
-                                        <option value="A-">A-</option>
-                                        <option value="B+">B+</option>
-                                        <option value="B-">B-</option>
-                                        <option value="AB+">AB+</option>
-                                        <option value="AB-">AB-</option>
+                                    <select class="form-control" name="bloodType">
+                                        <option value="O-" th:selected="${patient.getBloodType() == 'O-'}">O-</option>
+                                        <option value="A+" th:selected="${patient.getBloodType() == 'A+'}">A+</option>
+                                        <option value="A-" th:selected="${patient.getBloodType() == 'A-'}">A-</option>
+                                        <option value="B+" th:selected="${patient.getBloodType() == 'B+'}">B+</option>
+                                        <option value="B-" th:selected="${patient.getBloodType() == 'B-'}">B-</option>
+                                        <option value="AB+" th:selected="${patient.getBloodType() == 'AB+'}">AB+</option>
+                                        <option value="AB-" th:selected="${patient.getBloodType() == 'AB-'}">AB-</option>
                                     </select>
                                 </div>
                             </div>
@@ -171,7 +169,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-white"><i class="bi bi-exclamation-triangle text-purple"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" value="Penicilina, polen">
+                                    <input type="text" class="form-control" th:value="${patient.getAllergies()}">
                                 </div>
                             </div>
 

@@ -7,12 +7,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.medicore.app.models.Appointment;
 import com.medicore.app.models.ApptmType;
 import com.medicore.app.models.Employee;
 import com.medicore.app.models.Facility;
+import com.medicore.app.models.Patient;
 import com.medicore.app.services.AppointmentService;
 import com.medicore.app.services.EmployeeService;
 import com.medicore.app.services.FacilityService;
+import com.medicore.app.services.PatientService;
+import com.medicore.app.utils.UserSession;
 
 @Controller
 public class PatientController {
@@ -22,6 +26,8 @@ public class PatientController {
     private EmployeeService employeeService;
     @Autowired
     private FacilityService facilityService;
+    @Autowired
+    private PatientService patientService;
 
 
     @GetMapping("/patient")
@@ -29,7 +35,10 @@ public class PatientController {
         return "patient/patientMenu"; // Busca home.html en templates/
     }
     @GetMapping("/patient/updatePersonalData")
-    public String showUpdatePersonalDataView() {
+    public String showUpdatePersonalDataView(Model model) {
+        System.err.println("Document Number: " + UserSession.getDocumentNumber());
+        Patient patient = patientService.getPatientByDocumentNumber(UserSession.getDocumentNumber());
+        model.addAttribute("patient", patient);
         return "patient/updatePersonalData"; // Busca updatePersonalData.html en templates/
     }
     @GetMapping("/patient/activePrescriptions")
@@ -50,10 +59,12 @@ public class PatientController {
         List<ApptmType> apptmTypes = appointmentService.getAppointmentsTypes();
         List<Employee> doctors = employeeService.getAll();
         List<Facility> branches = facilityService.getAllFacilities();
+        List<Appointment> appointments = appointmentService.getAllAppointments();
 
         model.addAttribute("apptmTypes", apptmTypes);
         model.addAttribute("doctors", doctors);
         model.addAttribute("branches", branches);
+        model.addAttribute("appointments", appointments);
         return "patient/appointments/schedule"; // Busca schedule.html en templates/
     }
     @GetMapping("/patient/appointments/cancel")
