@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.medicore.app.models.Appointment;
 import com.medicore.app.models.ApptmType;
@@ -34,12 +36,19 @@ public class PatientController {
     public String showPatientMenu() {
         return "patient/patientMenu"; // Busca home.html en templates/
     }
-    @GetMapping("/patient/updatePersonalData")
+    @GetMapping("/patient/updatePersonalDataView")
     public String showUpdatePersonalDataView(Model model) {
         System.err.println("Document Number: " + UserSession.getDocumentNumber());
         Patient patient = patientService.getPatientByDocumentNumber(UserSession.getDocumentNumber());
         model.addAttribute("patient", patient);
         return "patient/updatePersonalData"; // Busca updatePersonalData.html en templates/
+    }
+    @PostMapping("/patient/updatePersonalData")
+    public String updatePersonalData(@ModelAttribute Patient patient) {
+        if(patientService.updatePatient(patient)){
+            return "redirect:/patient/updatePersonalDataView";
+        }
+         throw new RuntimeException("Error al actualizar los datos del paciente");
     }
     @GetMapping("/patient/activePrescriptions")
     public String showActivePrescriptionsView() {

@@ -79,7 +79,7 @@
 
             <!-- Main Content -->
             <div id="content" class="p-4 bg-light">
-
+                
                 <!-- Encabezado -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800 font-weight-bold">
@@ -96,7 +96,7 @@
                     </div>
 
                     <div class="card-body p-4">
-                        <form>
+                        <form th:action="@{/patient/updatePersonalData}" method="post">
                             
                             <!-- Sección 1: Documento e Identidad -->
                             <div class="section-title">
@@ -110,26 +110,27 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-light"><i class="bi bi-shield-lock text-muted"></i></span>
                                         </div>
-                                        <input type="text" class="form-control bg-light" th:value="${patient.getDocumentNumber()}" readonly>
+                                        <input type="hidden" name="id" th:value="${patient.getId()}">
+                                        <input type="text" class="form-control bg-light" name = "documentNumber" th:value="${patient.getDocumentNumber()}" readonly>
                                     </div>
                                     <small class="form-text text-muted">Campo no modificable.</small><
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label class="font-weight-bold small text-gray-700">Fecha de Nacimiento</label>
-                                    <input type="date" class="form-control" th:value="${patient.getBirthDate()}">
+                                    <input type="date" class="form-control" name = "birthDate" th:value="${patient.getBirthDate()}">
                                 </div>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label class="font-weight-bold small text-gray-700">Nombres</label>
-                                    <input type="text" class="form-control" th:value="${patient.getName()}">
+                                    <input type="text" class="form-control" name="name" th:value="${patient.getName()}">
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label class="font-weight-bold small text-gray-700">Apellidos</label>
-                                    <input type="text" class="form-control" th:value="${patient.getLastName()}">
+                                    <input type="text" class="form-control" name="lastName" th:value="${patient.getLastName()}">
                                 </div>
                             </div>
 
@@ -145,7 +146,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-white"><i class="bi bi-envelope text-purple"></i></span>
                                         </div>
-                                        <input type="email" class="form-control" th:value="${patient.getEmail()}">
+                                        <input type="email" class="form-control" name="email" th:value="${patient.getEmail()}">
                                     </div>
                                 </div>
 
@@ -169,7 +170,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-white"><i class="bi bi-exclamation-triangle text-purple"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" th:value="${patient.getAllergies()}">
+                                    <input type="text" class="form-control" name="allergies" th:value="${patient.getAllergies()}">
                                 </div>
                             </div>
 
@@ -179,7 +180,7 @@
                                 <button type="button" class="btn btn-light border font-weight-bold mr-2">
                                     Cancelar
                                 </button>
-                                <button type="button" class="btn btn-purple font-weight-bold px-4">
+                                <button type="submit" class="btn btn-purple font-weight-bold px-4">
                                     <i class="bi bi-arrow-repeat mr-1"></i> Actualizar Información
                                 </button>
                             </div>
