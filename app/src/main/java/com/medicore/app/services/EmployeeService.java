@@ -19,6 +19,9 @@ public class EmployeeService {
     public List<Role> getRoles() {
         return roleRepository.findAll();
     }
+    public List<Employee> getAll() {
+        return employeeRepository.findAll();
+    }
 
     public boolean deleteEmployeeByDocumentNumber(String documentNumber) {
         int deletedCount = employeeRepository.deleteByDocumentNumber(documentNumber);

@@ -62,18 +62,26 @@
                                         <!-- Especialidad y Sede -->
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label for="specialty" class="font-weight-bold text-gray-700">Especialidad Médica</label>
-                                                <select id="specialty" class="form-control" required>
-                                                    <option value="" disabled selected>Seleccione una especialidad...</option>
+                                                <label for="specialty" class="font-weight-bold text-gray-700">Tipo de Consulta</label>
+                                                <select class="form-control" id="specialty" name="especialidadId">
+                                                    <!-- Opción por defecto -->
+                                                    <option value="" disabled selected>Seleccione un tipo de cita</option>
                                                     
-                                                            
+                                                    <!-- Thymeleaf itera sobre la lista y extrae solo el atributo deseado -->
+                                                    <option th:each="item : ${apptmTypes}" 
+                                                            th:value="${item.id}" 
+                                                            th:text="${item.type}">
+                                                    </option>
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="location" class="font-weight-bold text-gray-700">Sede</label>
                                                 <select id="location" class="form-control" required>
                                                     <option value="" disabled selected>Seleccione una sede...</option>
-                                                     
+                                                     <option th:each="item : ${branches}" 
+                                                            th:value="${item.id}" 
+                                                            th:text="${item.facilityName}">
+                                                    </option>
                                                             
                                                 </select>
                                             </div>
@@ -87,9 +95,11 @@
                                                     <option value="" disabled selected>Seleccione un médico...</option>
                                                     <option th:each="doc : ${doctors}" 
                                                             th:value="${doc.id}" 
-                                                            th:text="${doc.fullName}">Dr. Carlos Mendoza</option>
+                                                            th:text="${doc.name + ' ' + doc.lastName + ' ' + doc.role}">
+                                                    </option>
                                                 </select>
                                             </div>
+                                        
                                             <div class="form-group col-md-6">
                                                 <label for="appointmentDate" class="font-weight-bold text-gray-700">Fecha Deseada</label>
                                                 <input type="date"  class="form-control" id="appointmentDate" required>
@@ -117,12 +127,7 @@
                                                 </label>
                                             </div>
                                         </div>
-
-                                        <!-- Motivo de Consulta -->
-                                        <div class="form-group mt-3">
-                                            <label for="notes" class="font-weight-bold text-gray-700">Motivo de Consulta (Opcional)</label>
-                                            <textarea class="form-control" id="notes" rows="3" placeholder="Describe brevemente tus síntomas o el motivo..."></textarea>
-                                        </div>
+                                        
 
                                         <hr class="my-4">
 
@@ -258,6 +263,7 @@
             $('#specialty, #location, #doctor, #appointmentDate, input[name="appointmentTime"]').on('change', updateSummary);
         });
     </script>
+    
 
 </body>
 </html>

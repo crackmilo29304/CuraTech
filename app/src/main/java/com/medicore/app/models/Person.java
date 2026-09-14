@@ -7,7 +7,8 @@ package com.medicore.app.models;
 import java.time.LocalDate;
 import java.time.Period;
 
-
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,12 +17,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 
-
+@MappedSuperclass
 public abstract class Person {
+    @Column(name = "document_number", unique = true)
     private String documentNumber;
+    @Column(name = "first_name")
     private String name;
+    @Column(name = "last_name")
     private String lastName;
     private String email;
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
     
