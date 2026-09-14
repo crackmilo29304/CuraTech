@@ -79,7 +79,7 @@
 
             <!-- Main Content -->
             <div id="content" class="p-4 bg-light">
-
+                
                 <!-- Encabezado -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800 font-weight-bold">
@@ -96,7 +96,7 @@
                     </div>
 
                     <div class="card-body p-4">
-                        <form>
+                        <form th:action="@{/patient/updatePersonalData}" method="post" th:object="${patient}">
                             
                             <!-- Sección 1: Documento e Identidad -->
                             <div class="section-title">
@@ -110,26 +110,39 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-light"><i class="bi bi-shield-lock text-muted"></i></span>
                                         </div>
-                                        <input type="text" class="form-control bg-light" value="1000123456" readonly>
+                                        <input type="hidden" name="id" th:value="${patient.getId()}">
+                                        <input type="text" class="form-control bg-light" name = "documentNumber" th:value="${patient.getDocumentNumber()}" readonly>
+                                        <span th:if="${#fields.hasErrors('documentNumber')}" 
+                                        th:errors="*{documentNumber}" 
+                                        class="text-danger">Error en documento</span>
                                     </div>
-                                    <small class="form-text text-muted">Campo no modificable.</small>
+                                    <small class="form-text text-muted">Campo no modificable.</small><
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label class="font-weight-bold small text-gray-700">Fecha de Nacimiento</label>
-                                    <input type="date" class="form-control" value="2000-01-15">
+                                    <input type="date" class="form-control" name = "birthDate" th:value="${patient.getBirthDate()}">
+                                    <span th:if="${#fields.hasErrors('birthDate')}" 
+                                        th:errors="*{birthDate}" 
+                                        class="text-danger">Error en fecha de nacimiento</span>
                                 </div>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label class="font-weight-bold small text-gray-700">Nombres</label>
-                                    <input type="text" class="form-control" placeholder="Ej. Carlos Alberto" value="Carlos Alberto">
+                                    <input type="text" class="form-control" name="name" th:value="${patient.getName()}">
+                                     <span th:if="${#fields.hasErrors('name')}" 
+                                        th:errors="*{name}" 
+                                        class="text-danger">Error en nombre</span>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label class="font-weight-bold small text-gray-700">Apellidos</label>
-                                    <input type="text" class="form-control" placeholder="Ej. Gómez Ruiz" value="Gómez Ruiz">
+                                    <input type="text" class="form-control" name="lastName" th:value="${patient.getLastName()}">
+                                    <span th:if="${#fields.hasErrors('lastName')}" 
+                                        th:errors="*{lastName}" 
+                                        class="text-danger">Error en apellido</span>
                                 </div>
                             </div>
 
@@ -145,22 +158,23 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-white"><i class="bi bi-envelope text-purple"></i></span>
                                         </div>
-                                        <input type="email" class="form-control" placeholder="correo@ejemplo.com" value="carlos.gomez@ejemplo.com">
+                                        <input type="email" class="form-control" name="email" th:value="${patient.getEmail()}">
+                                        <span th:if="${#fields.hasErrors('email')}" 
+                                        th:errors="*{email}" 
+                                        class="text-danger">Error en email</span>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label class="font-weight-bold small text-gray-700">Tipo de Sangre</label>
-                                    <select class="form-control">
-                                        <option value="">Seleccione...</option>
-                                        <option value="O+" selected>O+</option>
-                                        <option value="O-">O-</option>
-                                        <option value="A+">A+</option>
-                                        <option value="A-">A-</option>
-                                        <option value="B+">B+</option>
-                                        <option value="B-">B-</option>
-                                        <option value="AB+">AB+</option>
-                                        <option value="AB-">AB-</option>
+                                    <select class="form-control" name="bloodType">
+                                        <option value="O-" th:selected="${patient.getBloodType() == 'O-'}">O-</option>
+                                        <option value="A+" th:selected="${patient.getBloodType() == 'A+'}">A+</option>
+                                        <option value="A-" th:selected="${patient.getBloodType() == 'A-'}">A-</option>
+                                        <option value="B+" th:selected="${patient.getBloodType() == 'B+'}">B+</option>
+                                        <option value="B-" th:selected="${patient.getBloodType() == 'B-'}">B-</option>
+                                        <option value="AB+" th:selected="${patient.getBloodType() == 'AB+'}">AB+</option>
+                                        <option value="AB-" th:selected="${patient.getBloodType() == 'AB-'}">AB-</option>
                                     </select>
                                 </div>
                             </div>
@@ -171,7 +185,10 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-white"><i class="bi bi-exclamation-triangle text-purple"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" value="Penicilina, polen">
+                                    <input type="text" class="form-control" name="allergies" th:value="${patient.getAllergies()}">
+                                    <span th:if="${#fields.hasErrors('allergies')}" 
+                                        th:errors="*{allergies}" 
+                                        class="text-danger">Error en alergias</span>
                                 </div>
                             </div>
 
@@ -181,7 +198,7 @@
                                 <button type="button" class="btn btn-light border font-weight-bold mr-2">
                                     Cancelar
                                 </button>
-                                <button type="button" class="btn btn-purple font-weight-bold px-4">
+                                <button type="submit" class="btn btn-purple font-weight-bold px-4">
                                     <i class="bi bi-arrow-repeat mr-1"></i> Actualizar Información
                                 </button>
                             </div>
