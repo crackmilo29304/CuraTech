@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,9 +25,15 @@ public class Patient extends Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id; // DB
-
+    
+    @NotBlank(message = "Si no tiene ninguna alergia, escriba 'Ninguna'")
+     @Pattern(
+    regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", 
+    message = "Las alergias solo deben contener letras y espacios"
+    )
     private String allergies;
 
+    @NotBlank(message = "El tipo de sangre es obligatorio")
     @Column(name = "blood_type", nullable = false)
     private String bloodType;
     

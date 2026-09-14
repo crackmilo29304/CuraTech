@@ -96,7 +96,7 @@
                     </div>
 
                     <div class="card-body p-4">
-                        <form th:action="@{/patient/updatePersonalData}" method="post">
+                        <form th:action="@{/patient/updatePersonalData}" method="post" th:object="${patient}">
                             
                             <!-- Sección 1: Documento e Identidad -->
                             <div class="section-title">
@@ -112,6 +112,9 @@
                                         </div>
                                         <input type="hidden" name="id" th:value="${patient.getId()}">
                                         <input type="text" class="form-control bg-light" name = "documentNumber" th:value="${patient.getDocumentNumber()}" readonly>
+                                        <span th:if="${#fields.hasErrors('documentNumber')}" 
+                                        th:errors="*{documentNumber}" 
+                                        class="text-danger">Error en documento</span>
                                     </div>
                                     <small class="form-text text-muted">Campo no modificable.</small><
                                 </div>
@@ -119,6 +122,9 @@
                                 <div class="form-group col-md-6">
                                     <label class="font-weight-bold small text-gray-700">Fecha de Nacimiento</label>
                                     <input type="date" class="form-control" name = "birthDate" th:value="${patient.getBirthDate()}">
+                                    <span th:if="${#fields.hasErrors('birthDate')}" 
+                                        th:errors="*{birthDate}" 
+                                        class="text-danger">Error en fecha de nacimiento</span>
                                 </div>
                             </div>
 
@@ -126,11 +132,17 @@
                                 <div class="form-group col-md-6">
                                     <label class="font-weight-bold small text-gray-700">Nombres</label>
                                     <input type="text" class="form-control" name="name" th:value="${patient.getName()}">
+                                     <span th:if="${#fields.hasErrors('name')}" 
+                                        th:errors="*{name}" 
+                                        class="text-danger">Error en nombre</span>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label class="font-weight-bold small text-gray-700">Apellidos</label>
                                     <input type="text" class="form-control" name="lastName" th:value="${patient.getLastName()}">
+                                    <span th:if="${#fields.hasErrors('lastName')}" 
+                                        th:errors="*{lastName}" 
+                                        class="text-danger">Error en apellido</span>
                                 </div>
                             </div>
 
@@ -147,6 +159,9 @@
                                             <span class="input-group-text bg-white"><i class="bi bi-envelope text-purple"></i></span>
                                         </div>
                                         <input type="email" class="form-control" name="email" th:value="${patient.getEmail()}">
+                                        <span th:if="${#fields.hasErrors('email')}" 
+                                        th:errors="*{email}" 
+                                        class="text-danger">Error en email</span>
                                     </div>
                                 </div>
 
@@ -171,6 +186,9 @@
                                         <span class="input-group-text bg-white"><i class="bi bi-exclamation-triangle text-purple"></i></span>
                                     </div>
                                     <input type="text" class="form-control" name="allergies" th:value="${patient.getAllergies()}">
+                                    <span th:if="${#fields.hasErrors('allergies')}" 
+                                        th:errors="*{allergies}" 
+                                        class="text-danger">Error en alergias</span>
                                 </div>
                             </div>
 
