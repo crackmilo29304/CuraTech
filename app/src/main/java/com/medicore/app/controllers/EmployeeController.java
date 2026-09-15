@@ -40,10 +40,12 @@ public class EmployeeController {
     public String showSearchPatientsView() {
         return "employee/searchPatients"; // Busca searchPatients.html en templates/
     }
-    @GetMapping("/employee/createPrescription")
+    @GetMapping("/employee/createPrescriptionView")
     public String showCreatePrescriptionView(Model model) {
         List<Appointment> appointments = appointmentService.getScheduledAppointmentsByDoctor();
         List<Medicine> medicines = medicineService.getAllMedicines();
+        Prescription prescription = new Prescription();
+        model.addAttribute("prescription", prescription);
         model.addAttribute("appointments", appointments);
         model.addAttribute("medicines", medicines);
         return "employee/createPrescription"; // Busca createPrescription.html en templates/
@@ -55,7 +57,7 @@ public class EmployeeController {
         }
         
         prescriptionService.savePrescription(prescription);
-        return "redirect:/employee/createPrescription";
+        return "redirect:/employee/createPrescriptionView";
                
     }
     
