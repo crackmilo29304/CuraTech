@@ -38,7 +38,9 @@ public class AppointmentService {
 
          return true;
     }
-
+    public List<Appointment> getAllAppointments() {
+        return repo.findAll();
+    }
     public List<ApptmType> getAppointmentsTypes() {
         return apptmTypeRepo.findAll();
     }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.medicore.app.models.Appointment;
 import com.medicore.app.models.ApptmType;
 import com.medicore.app.models.Employee;
 import com.medicore.app.models.Facility;
@@ -74,10 +75,12 @@ public class PatientController {
         List<ApptmType> apptmTypes = appointmentService.getAppointmentsTypes();
         List<Employee> doctors = employeeService.getAll();
         List<Facility> branches = facilityService.getAllFacilities();
+        List<Appointment> appointments = appointmentService.getAllAppointments();
 
         model.addAttribute("apptmTypes", apptmTypes);
         model.addAttribute("doctors", doctors);
         model.addAttribute("branches", branches);
+        model.addAttribute("appointments", appointments);
         return "patient/appointments/schedule"; // Busca schedule.html en templates/
     }
     @GetMapping("/patient/appointments/cancel")

@@ -39,7 +39,7 @@ public class HomeController {
              System.out.println("Login fallido.");
             return "redirect:/login?error=true"; // Redirige de nuevo al login con un parámetro de error
         } 
-        
+        UserSession.setDocumentNumber(documentNumber);
         if (role.equals("ADMIN")) {
             return "redirect:/admin";
         } else if (role.equals("PACIENTE")) {
