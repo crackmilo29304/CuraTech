@@ -24,9 +24,7 @@ public class EmployeeController {
     private AppointmentService appointmentService;
     @Autowired
     private MedicineService medicineService;
-    @Autowired
-    private PrescriptionService prescriptionService;
-
+   
     @GetMapping("/employee")
     public String showEmployeeMenu() {
         return "employee/employeeMenu"; // Busca home.html en templates/
@@ -50,15 +48,6 @@ public class EmployeeController {
         model.addAttribute("medicines", medicines);
         return "employee/createPrescription"; // Busca createPrescription.html en templates/
     }
-    @PostMapping("/employee/createPrescription")
-    public String savePrescription(@ModelAttribute Prescription prescription, BindingResult bindingResult ,Model model ) {
-        if(bindingResult.hasErrors()){
-            return "employee/createPrescription";
-        }
-        
-        prescriptionService.savePrescription(prescription);
-        return "redirect:/employee/createPrescriptionView";
-               
-    }
+   
     
 }
