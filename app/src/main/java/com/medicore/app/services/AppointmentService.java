@@ -85,4 +85,8 @@ public class AppointmentService {
     public List<Appointment> getAppointmentsByPatient(Patient patient) {
         return repo.findByPatient_DocumentNumber(patient.getDocumentNumber());
     }
+
+    public List<Appointment> getScheduledAppointmentsByDoctor() {
+        return repo.findByIsAvailableAndEmployeeIsNotNull(false);
+    }
 }

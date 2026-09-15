@@ -7,10 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.medicore.app.models.ApptmType;
 import com.medicore.app.models.Employee;
 import com.medicore.app.models.Facility;
+import com.medicore.app.models.Patient;
 import com.medicore.app.services.AppointmentService;
 import com.medicore.app.services.EmployeeService;
 import com.medicore.app.services.FacilityService;
@@ -27,14 +30,19 @@ public class PatientController {
     private EmployeeService employeeService;
     @Autowired
     private FacilityService facilityService;
+    @Autowired
+    private PatientService patientService;
 
 
     @GetMapping("/patient")
     public String showPatientMenu() {
         return "patient/patientMenu"; // Busca home.html en templates/
     }
-    @GetMapping("/patient/updatePersonalData")
-    public String showUpdatePersonalDataView() {
+    @GetMapping("/patient/updatePersonalDataView")
+    public String showUpdatePersonalDataView(Model model) {
+        System.err.println("Document Number: " + UserSession.getDocumentNumber());
+        Patient patient = patientService.getPatientByDocumentNumber(UserSession.getDocumentNumber());
+        model.addAttribute("patient", patient);
         return "patient/updatePersonalData"; // Busca updatePersonalData.html en templates/
     }
     @PostMapping("/patient/updatePersonalData")
