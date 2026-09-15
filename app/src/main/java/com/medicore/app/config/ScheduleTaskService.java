@@ -6,7 +6,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.springframework.boot.CommandLineRunner;
+
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.medicore.app.models.Appointment;
@@ -19,10 +20,9 @@ import com.medicore.app.repository.EmployeeRepository;
 import com.medicore.app.repository.ScheduleRepository;
 import com.medicore.app.services.AppointmentService;
 
-import jakarta.transaction.Transactional;
 
 @Component
-public class RunConfig implements CommandLineRunner {
+public class ScheduleTaskService {
 
     private final AppointmentRepository appointmentRepo;
     private final EmployeeRepository employeeRepo;
@@ -31,7 +31,7 @@ public class RunConfig implements CommandLineRunner {
     private final AppointmentService appointmentService;
 
 
-    public RunConfig(
+    public ScheduleTaskService(
             AppointmentRepository appointmentRepo,
             EmployeeRepository employeeRepo,
             ScheduleRepository scheduleRepo,
@@ -44,10 +44,8 @@ public class RunConfig implements CommandLineRunner {
         this.appointmentService = appointmentService;
     }
 
-    @Override
-    @Transactional
-    public void run(String... args) throws Exception {
-        System.out.println("holaaaaaaaaaaaaa");
+    @Scheduled(cron = "0 59 23 * * SUN")
+    public void generateWeeklyAppointments() {
         appointmentRepo.deleteAll();
         scheduleRepo.deleteAll();
 
