@@ -17,6 +17,6 @@ public class UserSession {
     }
 
     public static void setDocumentNumber(String numero_documento) {
-        UserSession.documentNumber = numero_documento;
+        documentNumber = numero_documento;
     }
 }

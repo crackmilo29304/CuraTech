@@ -21,7 +21,7 @@ public class Medicine {
     private int id; //DB
     
     @Column(name = "medication_name", nullable = false)
-    private String medicineName;
+    private String name;
     
     @Column(name = "quantity_per_unit", nullable = false)
     private String quantityPerUnit;

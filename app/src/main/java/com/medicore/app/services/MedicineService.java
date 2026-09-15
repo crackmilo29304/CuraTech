@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.medicore.app.models.BatchStock;
+import com.medicore.app.models.Medicine;
 import com.medicore.app.repository.BatchStockRepository;
 import com.medicore.app.repository.MedicineRepository;
 
@@ -18,6 +19,9 @@ public class MedicineService {
 
     public List<BatchStock> getStock(){
         return batchStockRepository.findAll();
+    }
+    public List<Medicine> getAllMedicines() {
+        return medicineRepository.findAll();
     }
 
 }
