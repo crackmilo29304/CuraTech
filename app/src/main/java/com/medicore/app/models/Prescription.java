@@ -42,4 +42,13 @@ public class Prescription {
     @NotBlank(message = "La dosis es obligatoria")
     private String dosage;
     
+    @NotNull(message = "El batch stock asociado es obligatorio")
+    @ManyToOne(fetch = FetchType.LAZY) 
+    @JoinColumn(name = "batch_stock", nullable = false) //FK
+    private BatchStock batchStock;
+    
+    @NotNull(message = "El campo activo no puede ser nulo")
+    private boolean  active;
+
+
 }

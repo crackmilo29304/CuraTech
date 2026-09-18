@@ -16,10 +16,12 @@ import com.medicore.app.models.ApptmType;
 import com.medicore.app.models.Employee;
 import com.medicore.app.models.Facility;
 import com.medicore.app.models.Patient;
+import com.medicore.app.models.Prescription;
 import com.medicore.app.services.AppointmentService;
 import com.medicore.app.services.EmployeeService;
 import com.medicore.app.services.FacilityService;
 import com.medicore.app.services.PatientService;
+import com.medicore.app.services.PrescriptionService; 
 import com.medicore.app.utils.UserSession;
 
 import jakarta.validation.Valid;
@@ -35,6 +37,8 @@ public class PatientController {
     private FacilityService facilityService;
     @Autowired
     private PatientService patientService;
+    @Autowired
+    private PrescriptionService prescriptionService;
 
 
     @GetMapping
@@ -60,7 +64,9 @@ public class PatientController {
          throw new RuntimeException("Error al actualizar los datos del paciente");
     }
     @GetMapping("/activePrescriptions")
-    public String showActivePrescriptionsView() {
+    public String showActivePrescriptionsView(Model model) {
+        List<Prescription> activePrescriptions = prescriptionService.getActivePrescriptionsByPatient(UserSession.getDocumentNumber());
+        model.addAttribute("activePrescriptions", activePrescriptions);
         return "patient/activePrescriptions"; // Busca activePrescriptions.html en templates/
     }
     

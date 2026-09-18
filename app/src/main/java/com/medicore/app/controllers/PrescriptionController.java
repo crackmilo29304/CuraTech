@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.medicore.app.models.Prescription;
+import com.medicore.app.services.MedicineService;
 import com.medicore.app.services.PrescriptionService;
 
 @Controller
@@ -16,6 +17,10 @@ import com.medicore.app.services.PrescriptionService;
 public class PrescriptionController {
     @Autowired
     private PrescriptionService prescriptionService;
+    @Autowired
+    private MedicineService medicineService;
+
+    
 
     @PostMapping("/save")
     public String savePrescription(@ModelAttribute Prescription prescription, BindingResult bindingResult ,Model model ) {
@@ -23,6 +28,13 @@ public class PrescriptionController {
             return "employee/createPrescription";
         }
         
+        if (!medicineService.isAvailable(prescription)) {
+             bindingResult.rejectValue("batchStock", "error.Stock", "Sin stock disponible para este medicamento");
+             return "employee/createPrescription";
+        }
+
+        medicineService.setBatchStock(prescription);
+        prescription.setActive(true);
         prescriptionService.savePrescription(prescription);
         return "redirect:/employee/createPrescriptionView";
                

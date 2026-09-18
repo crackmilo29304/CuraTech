@@ -91,4 +91,5 @@ public class AppointmentService {
     public List<Appointment> getScheduledAppointmentsByDoctor() {
         return repo.findByIsAvailableAndEmployeeIsNotNull(false);
     }
+    
 }

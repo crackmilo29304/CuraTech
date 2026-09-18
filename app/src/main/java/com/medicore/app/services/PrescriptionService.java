@@ -1,5 +1,7 @@
 package com.medicore.app.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +16,10 @@ public class PrescriptionService {
     public boolean savePrescription(Prescription prescription) {
         prescriptionRepository.save(prescription);
         return true;
+    }
+
+    public List<Prescription> getActivePrescriptionsByPatient(String documentNumber) {
+        return prescriptionRepository.findByAppointmentPatientDocumentNumberAndActive(documentNumber, true);
+        
     }
 }
