@@ -76,9 +76,7 @@
                     <h1 class="h3 mb-0 text-gray-800 font-weight-bold">
                         <i class="bi bi-capsule text-purple mr-2"></i> Prescripciones Activas
                     </h1>
-                    <span class="badge badge-active px-3 py-2 rounded-pill font-weight-bold">
-                        <i class="bi bi-check-circle-fill mr-1"></i> 2 Tratamientos Vigentes
-                    </span>
+                
                 </div>
 
                 <!-- Tarjeta Principal con la Tabla -->
@@ -98,60 +96,15 @@
                                         <th class="py-3">Dosis / Posología</th>
                                         <th class="py-3">Indicaciones</th>
                                         <th class="py-3">Vencimiento</th>
-                                        <th class="py-3 text-center pr-4">Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="pl-4 font-weight-bold text-gray-800">
-                                            <i class="bi bi-capsule text-purple mr-2"></i>Amoxicilina 500mg
-                                            <span class="d-block small text-muted font-weight-normal">Cápsulas</span>
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-light text-dark border">
-                                                <i class="bi bi-clock-history mr-1 text-purple"></i>1 cada 8 horas
-                                            </span>
-                                            <small class="d-block text-muted mt-1">Duración: 7 días</small>
-                                        </td>
-                                        <td class="small text-gray-700">
-                                            Tomar junto con alimentos. Completar el tratamiento aunque disminuyan los síntomas.
-                                        </td>
-                                        <td>
-                                            <span class="font-weight-bold text-danger">
-                                                <i class="bi bi-calendar-event mr-1"></i>30/08/2026
-                                            </span>
-                                        </td>
-                                        <td class="text-center pr-4">
-                                            <button type="button" class="btn btn-sm btn-outline-primary" title="Ver Detalle">
-                                                <i class="bi bi-eye-fill"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pl-4 font-weight-bold text-gray-800">
-                                            <i class="bi bi-capsule text-purple mr-2"></i>Ibuprofeno 400mg
-                                            <span class="d-block small text-muted font-weight-normal">Tabletas</span>
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-light text-dark border">
-                                                <i class="bi bi-clock-history mr-1 text-purple"></i>1 cada 12 horas
-                                            </span>
-                                            <small class="d-block text-muted mt-1">Solo en caso de dolor</small>
-                                        </td>
-                                        <td class="small text-gray-700">
-                                            Tomar después de una comida principal. No exceder 3 días continuos.
-                                        </td>
-                                        <td>
-                                            <span class="font-weight-bold text-gray-700">
-                                                <i class="bi bi-calendar-event mr-1"></i>05/09/2026
-                                            </span>
-                                        </td>
-                                        <td class="text-center pr-4">
-                                            <button type="button" class="btn btn-sm btn-outline-primary" title="Ver Detalle">
-                                                <i class="bi bi-eye-fill"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                   <tr th:each="prescription : ${activePrescriptions}">
+                                        <td th:text="${prescription.medicine.name}"></td>
+                                        <td th:text="${prescription.dosage}"></td>
+                                        <td th:text="${prescription.directions}"></td>
+                                        <td th:text="${prescription.batchStock.expirationDate}"></td>
+                                   </tr>
                                 </tbody>
                             </table>
                         </div>

@@ -9,6 +9,8 @@ import com.medicore.app.models.Medicine;
 @Repository
 public interface BatchStockRepository extends JpaRepository<BatchStock, Integer>{
     boolean existsByMedicineAndQuantityGreaterThan(Medicine medicine, int quantity);
+
+    BatchStock findByMedicineAndQuantityGreaterThan(Medicine medicine, int quantity);
     
 
 }
