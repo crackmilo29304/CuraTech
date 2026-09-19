@@ -10,5 +10,6 @@ import com.medicore.app.models.Prescription;
 @Repository
 public interface PrescriptionRepository extends JpaRepository<Prescription, Integer>{
     List<Prescription> findByAppointment_Id(int appointmentId);
+   
     List<Prescription> findByAppointmentPatientDocumentNumberAndActive(String documentNumber, boolean active);
 }

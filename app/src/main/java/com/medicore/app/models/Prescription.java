@@ -47,7 +47,7 @@ public class Prescription {
     @JoinColumn(name = "batch_stock", nullable = false) //FK
     private BatchStock batchStock;
     
-    @NotNull(message = "El campo activo no puede ser nulo")
+    
     private boolean  active;
 
 

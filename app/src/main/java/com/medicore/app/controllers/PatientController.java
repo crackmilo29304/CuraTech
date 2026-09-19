@@ -66,6 +66,10 @@ public class PatientController {
     @GetMapping("/activePrescriptions")
     public String showActivePrescriptionsView(Model model) {
         List<Prescription> activePrescriptions = prescriptionService.getActivePrescriptionsByPatient(UserSession.getDocumentNumber());
+        System.out.println("Número de documento: " + UserSession.getDocumentNumber());
+        for (Prescription prescription : activePrescriptions) {
+            System.out.println("Prescription ID: " + prescription.getId());
+        }
         model.addAttribute("activePrescriptions", activePrescriptions);
         return "patient/activePrescriptions"; // Busca activePrescriptions.html en templates/
     }
