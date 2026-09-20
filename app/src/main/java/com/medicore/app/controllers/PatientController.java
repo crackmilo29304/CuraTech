@@ -1,5 +1,6 @@
 package com.medicore.app.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.medicore.app.models.ApptmType;
 import com.medicore.app.models.Employee;
 import com.medicore.app.models.Facility;
 import com.medicore.app.models.Patient;
+import com.medicore.app.models.Pqrs;
 import com.medicore.app.models.Prescription;
 import com.medicore.app.services.AppointmentService;
 import com.medicore.app.services.EmployeeService;
@@ -25,6 +27,7 @@ import com.medicore.app.services.PrescriptionService;
 import com.medicore.app.utils.UserSession;
 
 import jakarta.validation.Valid;
+
 
 @Controller
 @RequestMapping("/patient")
@@ -75,9 +78,29 @@ public class PatientController {
     }
     
     @GetMapping("/pqrs")
-    public String showPQRSView() {
+    public String showPQRSView(Model model) {
+        Pqrs pqrs = new Pqrs();
+        List<Pqrs> pqrsList = patientService.getPqrsByPatient(UserSession.getDocumentNumber());
+        model.addAttribute("pqrsList", pqrsList);
+        model.addAttribute("pqrs", pqrs);
         return "patient/pqrs"; // Busca pqrs.html en templates/
     }
+    @PostMapping("/save-pqrs")
+    public String savePqrs(@ModelAttribute Pqrs pqrs, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult.getAllErrors() );
+            return "patient/pqrs";
+        }
+        Patient patient = patientService.getPatientByDocumentNumber(UserSession.getDocumentNumber());
+        pqrs.setPatient(patient);
+        LocalDate currentDate = LocalDate.now();
+        pqrs.setDate(currentDate);
+        pqrs.setState("Pendiente"); // Establece el estado inicial
+        patientService.savePqrs(pqrs);
+
+        return "redirect:/patient/pqrs";
+    }
+    
     @GetMapping("/branches")
     public String showBranchesView() {
         return "patient/branches"; // Busca branches.html en templates/

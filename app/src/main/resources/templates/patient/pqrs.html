@@ -72,7 +72,7 @@
 
 <body id="page-top">
 
-    <div id="wrapper">
+     <div id="wrapper">
 
         <aside th:replace="fragments/patientSidebar :: patientSidebar"></aside>
 
@@ -113,13 +113,15 @@
 
                                 <div class="form-group col-md-6">
                                     <label class="font-weight-bold small text-gray-700">Asunto</label>
-                                    <input type="text" class="form-control" placeholder="Ej. Demora en asignación de citas medicinas especializadas">
+                                    <input th:field="*{subject}" type="text" class="form-control" placeholder="Ej. Demora en asignación de citas medicinas especializadas">
+                                    <span th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}" class="text-danger small"></span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="font-weight-bold small text-gray-700">Detalle de la Solicitud</label>
-                                <textarea class="form-control" rows="4" placeholder="Escriba detalladamente su solicitud, incluyendo fechas o nombres relevantes si aplica..."></textarea>
+                                <textarea th:field="*{description}" class="form-control" rows="4" placeholder="Escriba detalladamente su solicitud, incluyendo fechas o nombres relevantes si aplica..."></textarea>
+                                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger small"></span>
                             </div>
 
                             <div class="d-flex justify-content-end">
@@ -137,7 +139,7 @@
                         <h6 class="m-0 font-weight-bold text-purple">
                             <i class="bi bi-clock-history mr-2"></i> Mis PQRS Activas
                         </h6>
-                        <span class="badge badge-pill badge-primary px-3 py-2">2 Radicados en seguimiento</span>
+                        <span class="badge badge-pill badge-primary px-3 py-2" th:text="${#lists.size(pqrsList)} + ' Radicados en seguimiento'"></span>
                     </div>
 
                     <div class="card-body p-0">
@@ -150,58 +152,26 @@
                                         <th class="py-3">Asunto</th>
                                         <th class="py-3">Fecha Radicación</th>
                                         <th class="py-3">Estado</th>
-                                        <th class="py-3 text-center pr-4">Acción</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="pl-4 font-weight-bold text-purple">
-                                            #PQRS-2026-089
-                                        </td>
+                                    <tr  th:each="pqrs : ${pqrsList}">
+                                        <td class="pl-4 font-weight-bold text-purple" th:text="'Pqrs #' + ${pqrs.id}"></td>
                                         <td>
-                                            <span class="badge border font-weight-bold text-dark bg-light">Reclamo</span>
+                                            <span class="badge border font-weight-bold text-dark bg-light" th:text="${pqrs.type}"></span>
                                         </td>
-                                        <td class="small text-gray-800 font-weight-bold">
-                                            Demora en entrega de medicamento especial
-                                        </td>
-                                        <td class="small text-gray-600">
-                                            20/08/2026
-                                        </td>
+
+                                        <td class="small text-gray-800 font-weight-bold" th:text="${pqrs.subject}"></td>
+
+                                        <td class="small text-gray-600" th:text="${pqrs.date}"></td>
+                                       
                                         <td>
-                                            <span class="badge badge-process px-2 py-1 rounded-pill font-weight-bold">
-                                                <i class="bi bi-gear-wide-connected mr-1"></i>En Trámite
-                                            </span>
+                                            <span th:text="${pqrs.state}"></span>                                            
                                         </td>
-                                        <td class="text-center pr-4">
-                                            <button type="button" class="btn btn-sm btn-outline-primary" title="Ver Detalle">
-                                                <i class="bi bi-eye-fill"></i>
-                                            </button>
-                                        </td>
+                                       
                                     </tr>
-                                    <tr>
-                                        <td class="pl-4 font-weight-bold text-purple">
-                                            #PQRS-2026-074
-                                        </td>
-                                        <td>
-                                            <span class="badge border font-weight-bold text-dark bg-light">Petición</span>
-                                        </td>
-                                        <td class="small text-gray-800 font-weight-bold">
-                                            Copia de historia clínica presencial
-                                        </td>
-                                        <td class="small text-gray-600">
-                                            15/08/2026
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pending px-2 py-1 rounded-pill font-weight-bold">
-                                                <i class="bi bi-hourglass-split mr-1"></i>Pendiente
-                                            </span>
-                                        </td>
-                                        <td class="text-center pr-4">
-                                            <button type="button" class="btn btn-sm btn-outline-primary" title="Ver Detalle">
-                                                <i class="bi bi-eye-fill"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                   
                                 </tbody>
                             </table>
                         </div>

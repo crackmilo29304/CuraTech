@@ -35,6 +35,9 @@ public class Pqrs {
     @NotBlank(message = "El tipo de solicitud es obligatorio")
     private String type;
 
+    @NotBlank(message = "El estado de solicitud es obligatorio")
+    private String state;
+
     @NotNull(message = "el paciente es obligatorio") 
     @ManyToOne(fetch = FetchType.LAZY) 
     @JoinColumn(name = "patient_id", nullable = false) //FK

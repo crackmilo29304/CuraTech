@@ -129,4 +129,8 @@ public class PatientService {
         pqrsRepository.save(pqrs);
         return true;
     }
+    public List<Pqrs> getPqrsByPatient(String documentNumber) {
+        return pqrsRepository.findByPatientDocumentNumber(documentNumber);
+       
+    }
 }
