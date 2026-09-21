@@ -80,9 +80,7 @@
                     <h1 class="h3 mb-0 text-gray-800 font-weight-bold">
                         <i class="bi bi-person-plus-fill text-purple mr-2"></i>Registro de Nuevos Pacientes
                     </h1>
-                    <a th:href="@{/empleado/pacientes}" class="btn btn-outline-secondary font-weight-bold btn-sm shadow-sm">
-                        <i class="bi bi-arrow-left mr-1"></i> Volver a la Lista
-                    </a>
+                
                 </div>
 
                 <!-- Formulario Principal -->
@@ -94,80 +92,66 @@
                     </div>
 
                     <div class="card-body p-4">
-                        <form th:action="@{/empleado/pacientes/guardar}" method="post">
+                        <form th:action="@{/employee/save-patient}" method="post" th:object="${patient}">
                             
                             <!-- Sección 1: Datos Personales -->
                             <div class="section-title">
                                 <i class="bi bi-person-vcard mr-2"></i>1. Datos Personales
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label class="form-label font-weight-bold small text-gray-700">Tipo de Documento *</label>
-                                    <select class="form-control" required>
-                                        <option value="" disabled selected>Seleccione...</option>
-                                        <option value="CC">Cédula de Ciudadanía (CC)</option>
-                                        <option value="TI">Tarjeta de Identidad (TI)</option>
-                                        <option value="CE">Cédula de Extranjería (CE)</option>
-                                        <option value="PAS">Pasaporte</option>
-                                    </select>
-                                </div>
+                                
+                                
                                 <div class="form-group col-md-4">
                                     <label class="form-label font-weight-bold small text-gray-700">Número de Documento *</label>
-                                    <input type="text" class="form-control" placeholder="Ej. 1020304050" required>
+                                    <input type="text" class="form-control" placeholder="Ej. 1020304050" th:field="*{documentNumber}" required>
+                                    <span class="text-danger" th:if="${#fields.hasErrors('documentNumber')}" th:errors="*{documentNumber}"> </span>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="form-label font-weight-bold small text-gray-700">Fecha de Nacimiento *</label>
-                                    <input type="date" class="form-control" required>
+                                    <input type="date"  th:field="*{birthDate}" class="form-control" required>
+                                    <span class="text-danger" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></span>
                                 </div>
-                            </div>
 
-                            <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label class="form-label font-weight-bold small text-gray-700">Nombres *</label>
-                                    <input type="text" class="form-control" placeholder="Ej. Carlos Alberto" required>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label class="form-label font-weight-bold small text-gray-700">Apellidos *</label>
-                                    <input type="text" class="form-control" placeholder="Ej. Gómez Ruiz" required>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label class="form-label font-weight-bold small text-gray-700">Género / Sexo *</label>
-                                    <select class="form-control" required>
-                                        <option value="" disabled selected>Seleccione...</option>
-                                        <option value="M">Masculino</option>
-                                        <option value="F">Femenino</option>
-                                        <option value="O">Otro</option>
-                                    </select>
+                                    <input type="text" class="form-control" placeholder="Ej. Carlos Alberto" th:field="*{name}" required>
+                                    <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                                 </div>
                             </div>
 
-                            <!-- Sección 2: Contacto y Ubicación -->
-                            <div class="section-title mt-4">
-                                <i class="bi bi-geo-alt-fill mr-2"></i>2. Datos de Contacto y Ubicación
-                            </div>
                             <div class="form-row">
+                                
                                 <div class="form-group col-md-4">
-                                    <label class="form-label font-weight-bold small text-gray-700">Teléfono / Celular *</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-white"><i class="bi bi-telephone text-purple"></i></span>
-                                        </div>
-                                        <input type="tel" class="form-control" placeholder="Ej. 3001234567" required>
-                                    </div>
+                                    <label class="form-label font-weight-bold small text-gray-700">Apellidos *</label>
+                                    <input type="text" class="form-control" placeholder="Ej. Gómez Ruiz" th:field="*{lastName}" required>
+                                    <span class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
                                 </div>
+
+                                <div class="form-group col-md-4">
+                                    <label class="form-label font-weight-bold small text-gray-700">Alergias *</label>
+                                    <input type="text" class="form-control" placeholder="Si no tiene escriba 'Ninguna'" th:field="*{allergies}" required>
+                                    <span class="text-danger" th:if="${#fields.hasErrors('allergies')}" th:errors="*{allergies}"></span>
+                                </div>
+                            
                                 <div class="form-group col-md-4">
                                     <label class="form-label font-weight-bold small text-gray-700">Correo Electrónico</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-white"><i class="bi bi-envelope text-purple"></i></span>
                                         </div>
-                                        <input type="email" class="form-control" placeholder="correo@ejemplo.com">
+                                        <input type="email"  class="form-control" placeholder="correo@ejemplo.com" th:field="*{email}">
+                                        <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                                     </div>
                                 </div>
+                                
 
+                                
+                            </div>
+
+                            <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label class="form-label font-weight-bold small text-gray-700">Grupo Sanguíneo y RH</label>
-                                    <select class="form-control">
+                                    <select class="form-control" th:field="*{bloodType}">
                                         <option value="">Desconocido</option>
                                         <option value="O+">O+</option>
                                         <option value="O-">O-</option>
@@ -178,9 +162,12 @@
                                         <option value="AB+">AB+</option>
                                         <option value="AB-">AB-</option>
                                     </select>
+                                    <span class="text-danger" th:if="${#fields.hasErrors('bloodType')}" th:errors="*{bloodType}"></span>
                                 </div>
-                                
                             </div>
+                        </div>
+
+                        
 
                             
 

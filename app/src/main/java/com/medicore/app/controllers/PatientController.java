@@ -86,7 +86,7 @@ public class PatientController {
         return "patient/pqrs"; // Busca pqrs.html en templates/
     }
     @PostMapping("/save-pqrs")
-    public String savePqrs(@ModelAttribute Pqrs pqrs, BindingResult bindingResult, Model model) {
+    public String savePqrs(@Valid @ModelAttribute Pqrs pqrs, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.getAllErrors() );
             return "patient/pqrs";
