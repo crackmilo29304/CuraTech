@@ -91,13 +91,22 @@
                         </h6>
                     </div>
 
+                    
+
                     <div class="card-body p-4">
-                        <form th:action="@{/employee/createPrescription}" method="post" th:object="${prescription}">
+                        <form th:action="@{/prescription/save}" method="post" th:object="${prescription}">
                             
                             <!-- Relación con la Cita -->
                             <div class="section-title">
                                 <i class="bi bi-calendar-check mr-2"></i>1. Cita Médica Asociada
                             </div>
+
+                            <span th:each="err : ${#fields.errors('batchStock')}" 
+                                th:if="${err.contains('Sin stock')}" 
+                                th:text="${err}" 
+                                class="text-danger small font-weight-bold d-block mt-1">
+                            </span>
+                            
                             <div class="form-row mb-3">
                                 <div class="form-group col-md-6">
                                     <label class="form-label font-weight-bold small text-gray-700">Seleccionar Cita</label>
@@ -160,7 +169,10 @@
                                 <button type="submit" class="btn btn-purple font-weight-bold px-4">
                                     <i class="bi bi-check-circle-fill mr-1"></i> Guardar Prescripción
                                 </button>
+
                             </div>
+
+                            
 
                         </form>
                     </div>

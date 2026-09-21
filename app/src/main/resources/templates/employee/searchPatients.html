@@ -88,31 +88,30 @@
                 <!-- Card de Filtros de Búsqueda -->
                 <div class="card shadow mb-4">
                     <div class="card-body">
-                        <form class="row align-items-end">
-                            <div class="col-md-5 mb-3 mb-md-0">
-                                <label class="form-label text-gray-700 font-weight-bold small">Documento o Nombre</label>
+                        <form class="row align-items-end" th:action="@{/employee/search-patients}" method="get"> 
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <label class="form-label text-gray-700 font-weight-bold small">Documento</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-white"><i class="bi bi-search text-purple"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="Ej. 1020304050 o Carlos Gómez...">
+                                    <input type="text" name="document" class="form-control" placeholder="Ej. 1020304050">
                                 </div>
                             </div>
 
                             <div class="col-md-4 mb-3 mb-md-0">
-                                <label class="form-label text-gray-700 font-weight-bold small">Entidad / EPS</label>
-                                <select class="form-control">
-                                    <option value="">Todas las EPS</option>
-                                    <option>EPS Sura</option>
-                                    <option>EPS Sanitas</option>
-                                    <option>Compensar</option>
-                                    <option>Salud Total</option>
-                                    <option>Particular</option>
-                                </select>
+                                <label class="form-label text-gray-700 font-weight-bold small">Nombre</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-white"><i class="bi bi-search text-purple"></i></span>
+                                    </div>
+                                    <input type="text" name="name" class="form-control" placeholder="Ej. Carlos Gómez...">
+                                </div>
                             </div>
 
+
                             <div class="col-md-3">
-                                <button type="button" class="btn btn-purple btn-block font-weight-bold">
+                                <button type="submit" class="btn btn-purple btn-block font-weight-bold">
                                     <i class="bi bi-funnel-fill mr-1"></i> Buscar
                                 </button>
                             </div>
@@ -126,7 +125,7 @@
                         <h6 class="m-0 font-weight-bold text-purple">
                             <i class="bi bi-people-fill mr-2"></i>Pacientes Registrados
                         </h6>
-                        <span class="badge badge-light text-purple p-2 border font-weight-bold">Total: 3</span>
+                        <span class="badge badge-light text-purple p-2 border font-weight-bold" th:text="|Total: ${foundPatients.size()}"></span>
                     </div>
 
                     <div class="card-body p-0">
@@ -137,112 +136,27 @@
                                         <th>Paciente</th>
                                         <th>Documento</th>
                                         <th>Contacto</th>
-                                        <th>EPS</th>
                                         <th>RH</th>
-                                        <th class="text-center">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-initial mr-3">CG</div>
-                                                <div>
-                                                    <div class="font-weight-bold text-gray-800">Carlos Gómez</div>
-                                                    <div class="small text-gray-500">carlos.gomez@email.com</div>
-                                                </div>
-                                            </div>
+                                    <tr th:each="patient : ${foundPatients}">
+                                        <td>                                            
+                                            <div class="font-weight-bold text-gray-800" th:text="${patient.name}"></div>                   
                                         </td>
-                                        <td class="align-middle">CC 1020304050</td>
-                                        <td class="align-middle">+57 300 123 4567</td>
-                                        <td class="align-middle">
-                                            <span class="badge badge-light text-dark border">EPS Sura</span>
-                                        </td>
-                                        <td class="align-middle font-weight-bold text-purple">O+</td>
-                                        <td class="align-middle text-center">
-                                            <button type="button" class="btn btn-sm btn-light border text-purple mr-1" title="Ver Historia Clínica">
-                                                <i class="bi bi-journal-medical"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-light border text-primary mr-1" title="Editar Paciente">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-light border text-success" title="Agendar Cita">
-                                                <i class="bi bi-calendar-plus"></i>
-                                            </button>
-                                        </td>
+                                        <td class="align-middle" th:text="${patient.documentNumber}"></td>
+                                        <td class="align-middle" th:text="${patient.email}"></td>
+                                       
+                                        <td class="align-middle font-weight-bold text-purple" th:text="${patient.bloodType}">
                                     </tr>
 
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-initial mr-3">AM</div>
-                                                <div>
-                                                    <div class="font-weight-bold text-gray-800">Ana María Martínez</div>
-                                                    <div class="small text-gray-500">ana.martinez@email.com</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">CC 52987654</td>
-                                        <td class="align-middle">+57 315 987 6543</td>
-                                        <td class="align-middle">
-                                            <span class="badge badge-light text-dark border">EPS Sanitas</span>
-                                        </td>
-                                        <td class="align-middle font-weight-bold text-purple">A+</td>
-                                        <td class="align-middle text-center">
-                                            <button type="button" class="btn btn-sm btn-light border text-purple mr-1" title="Ver Historia Clínica">
-                                                <i class="bi bi-journal-medical"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-light border text-primary mr-1" title="Editar Paciente">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-light border text-success" title="Agendar Cita">
-                                                <i class="bi bi-calendar-plus"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-initial mr-3">LR</div>
-                                                <div>
-                                                    <div class="font-weight-bold text-gray-800">Luis Fernando Rodríguez</div>
-                                                    <div class="small text-gray-500">luis.rodriguez@email.com</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">TI 1088456123</td>
-                                        <td class="align-middle">+57 320 555 1122</td>
-                                        <td class="align-middle">
-                                            <span class="badge badge-light text-dark border">Particular</span>
-                                        </td>
-                                        <td class="align-middle font-weight-bold text-purple">O-</td>
-                                        <td class="align-middle text-center">
-                                            <button type="button" class="btn btn-sm btn-light border text-purple mr-1" title="Ver Historia Clínica">
-                                                <i class="bi bi-journal-medical"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-light border text-primary mr-1" title="Editar Paciente">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-light border text-success" title="Agendar Cita">
-                                                <i class="bi bi-calendar-plus"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <!-- Paginador -->
-                    <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
-                        <span class="small text-gray-600">Mostrando 1 a 3 de 3 registros</span>
-                        <ul class="pagination pagination-sm mb-0">
-                            <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
-                            <li class="page-item active"><a class="page-link bg-purple-gradient border-0" href="#">1</a></li>
-                            <li class="page-item disabled"><a class="page-link" href="#">Siguiente</a></li>
-                        </ul>
-                    </div>
+                    
                 </div>
 
             </div>
