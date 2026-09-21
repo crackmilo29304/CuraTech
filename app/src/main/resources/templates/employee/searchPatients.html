@@ -125,7 +125,7 @@
                         <h6 class="m-0 font-weight-bold text-purple">
                             <i class="bi bi-people-fill mr-2"></i>Pacientes Registrados
                         </h6>
-                        <span class="badge badge-light text-purple p-2 border font-weight-bold">Total: 3</span>
+                        <span class="badge badge-light text-purple p-2 border font-weight-bold" th:text="|Total: ${foundPatients.size()}"></span>
                     </div>
 
                     <div class="card-body p-0">
@@ -156,15 +156,7 @@
                         </div>
                     </div>
 
-                    <!-- Paginador -->
-                    <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
-                        <span class="small text-gray-600">Mostrando 1 a 3 de 3 registros</span>
-                        <ul class="pagination pagination-sm mb-0">
-                            <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
-                            <li class="page-item active"><a class="page-link bg-purple-gradient border-0" href="#">1</a></li>
-                            <li class="page-item disabled"><a class="page-link" href="#">Siguiente</a></li>
-                        </ul>
-                    </div>
+                    
                 </div>
 
             </div>
