@@ -88,14 +88,14 @@
                 <!-- Card de Filtros de Búsqueda -->
                 <div class="card shadow mb-4">
                     <div class="card-body">
-                        <form class="row align-items-end">
+                        <form class="row align-items-end" th:action="@{/employee/search-patients}" method="get"> 
                             <div class="col-md-4 mb-3 mb-md-0">
                                 <label class="form-label text-gray-700 font-weight-bold small">Documento</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-white"><i class="bi bi-search text-purple"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="Ej. 1020304050 o Carlos Gómez...">
+                                    <input type="text" name="document" class="form-control" placeholder="Ej. 1020304050">
                                 </div>
                             </div>
 
@@ -105,13 +105,13 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-white"><i class="bi bi-search text-purple"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="Ej. 1020304050 o Carlos Gómez...">
+                                    <input type="text" name="name" class="form-control" placeholder="Ej. Carlos Gómez...">
                                 </div>
                             </div>
 
 
                             <div class="col-md-3">
-                                <button type="button" class="btn btn-purple btn-block font-weight-bold">
+                                <button type="submit" class="btn btn-purple btn-block font-weight-bold">
                                     <i class="bi bi-funnel-fill mr-1"></i> Buscar
                                 </button>
                             </div>
@@ -140,33 +140,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-initial mr-3">CG</div>
-                                                <div>
-                                                    <div class="font-weight-bold text-gray-800">Carlos Gómez</div>
-                                                    <div class="small text-gray-500">carlos.gomez@email.com</div>
-                                                </div>
-                                            </div>
+                                    <tr th:each="patient : ${foundPatients}">
+                                        <td>                                            
+                                            <div class="font-weight-bold text-gray-800" th:text="${patient.name}"></div>                   
                                         </td>
-                                        <td class="align-middle">CC 1020304050</td>
-                                        <td class="align-middle">+57 300 123 4567</td>
-                                        <td class="align-middle">
-                                            <span class="badge badge-light text-dark border">EPS Sura</span>
-                                        </td>
-                                        <td class="align-middle font-weight-bold text-purple">O+</td>
-                                        <td class="align-middle text-center">
-                                            <button type="button" class="btn btn-sm btn-light border text-purple mr-1" title="Ver Historia Clínica">
-                                                <i class="bi bi-journal-medical"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-light border text-primary mr-1" title="Editar Paciente">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-light border text-success" title="Agendar Cita">
-                                                <i class="bi bi-calendar-plus"></i>
-                                            </button>
-                                        </td>
+                                        <td class="align-middle" th:text="${patient.documentNumber}"></td>
+                                        <td class="align-middle" th:text="${patient.email}"></td>
+                                       
+                                        <td class="align-middle font-weight-bold text-purple" th:text="${patient.bloodType}">
                                     </tr>
 
                                     

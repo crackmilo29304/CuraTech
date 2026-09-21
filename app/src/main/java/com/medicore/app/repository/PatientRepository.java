@@ -23,4 +23,6 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
     @Modifying
     @Transactional
     void deleteByDocumentNumber(String documentNumber);
+
+    List<Patient> findByNameContainingIgnoreCase(String name);
 }

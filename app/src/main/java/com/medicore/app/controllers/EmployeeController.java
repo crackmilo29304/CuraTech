@@ -1,6 +1,8 @@
 package com.medicore.app.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.medicore.app.models.Appointment;
 import com.medicore.app.models.Medicine;
@@ -20,6 +23,7 @@ import com.medicore.app.services.MedicineService;
 import com.medicore.app.services.PatientService;
 
 import jakarta.validation.Valid;
+
 
 
 
@@ -55,10 +59,24 @@ public class EmployeeController {
         return "redirect:/employee/registerPatients"; // Redirige a la vista de registro de pacientes después de guardar
     }
     
-    @GetMapping("/searchPatients")
+    @GetMapping("/search-patients-view")
     public String showSearchPatientsView() {
         return "employee/searchPatients"; // Busca searchPatients.html en templates/
     }
+    @GetMapping("/search-patients")
+    public String searchPatients(@RequestParam String document, @RequestParam String name, Model model) {
+        if(document.isBlank()){
+            List<Patient> foundPatients = patientService.searchPatientsByName(name);
+            model.addAttribute("foundPatients", foundPatients);
+        } else {
+            Optional<Patient> foundPatient = patientService.searchPatientsByDocument(document);
+            List<Patient> foundPatients = new ArrayList<>();
+            foundPatients.add(foundPatient.orElse(null));
+            model.addAttribute("foundPatients", foundPatients);
+        }
+        return "employee/searchPatients";
+    }
+    
     @GetMapping("/createPrescriptionView")
     public String showCreatePrescriptionView(Model model) {
         List<Appointment> appointments = appointmentService.getScheduledAppointmentsByDoctor();

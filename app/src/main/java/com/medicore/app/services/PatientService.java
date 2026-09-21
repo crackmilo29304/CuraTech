@@ -1,6 +1,7 @@
 package com.medicore.app.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -132,5 +133,11 @@ public class PatientService {
     public List<Pqrs> getPqrsByPatient(String documentNumber) {
         return pqrsRepository.findByPatientDocumentNumber(documentNumber);
        
+    }
+    public List<Patient> searchPatientsByName(String name) {
+        return patientRepository.findByNameContainingIgnoreCase(name);
+    }
+    public Optional<Patient> searchPatientsByDocument(String document) {
+        return patientRepository.findByDocumentNumber(document);
     }
 }
