@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.medicore.app.models.Appointment;
 import com.medicore.app.models.ApptmType;
@@ -121,5 +122,15 @@ public class PatientController {
     @GetMapping("/appointments/cancel")
     public String showCancelView() {
         return "patient/appointments/cancel"; // Busca cancel.html en templates/
+    }
+
+    @GetMapping("/available-times")
+    public String getAvailableTimes(@RequestParam String apptmTypeId, @RequestParam String doctorId, @RequestParam String date, Model model) {
+        System.out.println("apptmTypeId: " + apptmTypeId);
+        System.out.println("doctorId: " + doctorId);
+        System.out.println("date: " + date);
+        List<Appointment> availableTimes = appointmentService.getAvailableTimes(apptmTypeId, doctorId, date);
+        model.addAttribute("availableTimes", availableTimes);
+        return "patient/appointments/timesAvailable :: timesContainer";
     }
 }

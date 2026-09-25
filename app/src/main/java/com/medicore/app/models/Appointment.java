@@ -47,10 +47,16 @@ public class Appointment {
     
 
    
-    public String getFormattedTime() {
+    public String getFormattedDateTime() {
         if (dateTime == null) return "";
         // Format: HH for 24h or hh for 12h
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return dateTime.format(formatter);
+    }
+
+     public String getFormattedTime() {
+        if (dateTime == null) return "";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return dateTime.format(formatter);
     }
 
