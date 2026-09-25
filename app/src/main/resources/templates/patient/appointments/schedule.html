@@ -39,15 +39,15 @@
                         </h1>
                     </div>
 
-                    <!-- Mensajes de éxito o error del servidor -->
+                    <!-- Mensajes de éxito o error del servidor 
                     <div  class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-                        <i class="bi bi-check-circle-fill mr-2"></i> ¡La cita ha sido agendada con éxito!
+                        <i class="bi bi-check-circle-fill mr-2"></i> ¡La cita ha sido agendada con éxito! 
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                    </div>
+                    </div>  -->
 
-                    <form>
+                    <form th:action="@{/appointments/schedule-apptm}" method="post" id="appointmentForm">
                         
                         <div class="row">
 
@@ -62,8 +62,8 @@
                                         <!-- Especialidad y Sede -->
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label for="specialty" class="font-weight-bold text-gray-700">Tipo de Consulta</label>
-                                                <select class="form-control" id="specialty" name="especialidadId">
+                                                <label for="apptmType" class="font-weight-bold text-gray-700">Tipo de Consulta</label>
+                                                <select class="form-control" id="apptmType" name="apptmTypeId" required>
                                                     <!-- Opción por defecto -->
                                                     <option value="" disabled selected>Seleccione un tipo de cita</option>
                                                     
@@ -91,40 +91,29 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="doctor" class="font-weight-bold text-gray-700">Médico Especialista</label>
-                                                <select id="doctor"  class="form-control" required>
+                                                <select id="doctor"  class="form-control" name="doctorId" required>
                                                     <option value="" disabled selected>Seleccione un médico...</option>
                                                     <option th:each="doc : ${doctors}" 
                                                             th:value="${doc.id}" 
-                                                            th:text="${doc.name + ' ' + doc.lastName + ' ' + doc.role}">
+                                                            th:text="${doc.name + ' ' + doc.lastName + ', ' + doc.role.titleName}">
                                                     </option>
                                                 </select>
                                             </div>
                                         
                                             <div class="form-group col-md-6">
                                                 <label for="appointmentDate" class="font-weight-bold text-gray-700">Fecha Deseada</label>
-                                                <input type="date"  class="form-control" id="appointmentDate" required>
+                                                <input type="date"  class="form-control" id="appointmentDate" name="date" required>
                                             </div>
                                         </div>
 
                                         <!-- Horarios Disponibles -->
-                                        <div class="form-group mt-3">
-                                            <label class="font-weight-bold text-gray-700 d-block">Horarios Disponibles</label>
-                                            <div class="btn-group-toggle d-flex flex-wrap gap-2" data-toggle="buttons">
-                                                <label class="btn btn-outline-primary m-1 active">
-                                                    <input type="radio" id="time1" value="08:00 AM" checked> 08:00 AM
-                                                </label>
-                                                <label class="btn btn-outline-primary m-1">
-                                                    <input type="radio" id="time2" value="08:30 AM"> 08:30 AM
-                                                </label>
-                                                <label class="btn btn-outline-primary m-1">
-                                                    <input type="radio" id="time3" value="09:15 AM"> 09:15 AM
-                                                </label>
-                                                <label class="btn btn-outline-primary m-1">
-                                                    <input type="radio" id="time4" value="10:00 AM"> 10:00 AM
-                                                </label>
-                                                <label class="btn btn-outline-primary m-1">
-                                                    <input type="radio" id="time5" value="02:30 PM"> 02:30 PM
-                                                </label>
+                                        <div id="availableTimesSection" style="display: none;" class="mt-4">
+                                            <label class="font-weight-bold text-gray-700">Horarios Disponibles *</label>
+
+                                            <!-- AQUÍ se inyectará la respuesta del servidor vía AJAX -->
+                                            <div id="timesContainer" th:fragment="timesContainer">
+                                                <!-- Puedes dejarlo vacío o con un loader/texto temporal -->
+                                                <p class="text-muted small">Cargando horarios...</p>
                                             </div>
                                         </div>
                                         
@@ -237,12 +226,34 @@
     <!-- Script para reactividad visual (Resumen y Modal en tiempo real) -->
     <script>
         $(document).ready(function () {
+            function formatDateForInput(date) {
+                var year = date.getFullYear();
+                var month = String(date.getMonth() + 1).padStart(2, '0');
+                var day = String(date.getDate()).padStart(2, '0');
+                return year + '-' + month + '-' + day;
+            }
+
+            var today = new Date();
+            var dayOfWeek = today.getDay();
+            var daysSinceMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+            var weekStart = new Date(today);
+            weekStart.setDate(today.getDate() - daysSinceMonday);
+            var weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekStart.getDate() + 6);
+
+            $('#appointmentDate')
+                .attr('min', formatDateForInput(weekStart))
+                .attr('max', formatDateForInput(weekEnd));
+
             function updateSummary() {
-                var spec = $('#specialty option:selected').text();
+                var spec = $('#apptmType option:selected').text();
                 var branch = $('#location option:selected').text();
                 var doc = $('#doctor option:selected').text();
                 var date = $('#appointmentDate').val();
                 var time = $('input[name="appointmentTime"]:checked').val();
+                var allFieldsSelected = $('#apptmType').val() && $('#location').val() && $('#doctor').val() && date;
+
+                $('#availableTimesSection').toggle(Boolean(allFieldsSelected));
 
                 var dateTimeText = (date && time) ? (date + ' - ' + time) : '---';
 
@@ -260,8 +271,53 @@
             }
 
             // Escuchar cambios en los inputs
-            $('#specialty, #location, #doctor, #appointmentDate, input[name="appointmentTime"]').on('change', updateSummary);
+            $('#apptmType, #location, #doctor, #appointmentDate, input[name="appointmentTime"]').on('change', updateSummary);
+            $('form').on('reset', function () {
+                setTimeout(updateSummary, 0);
+            });
         });
+
+        var lastRequestKey = '';
+
+        function loadAvailableTimes() {
+            var apptmTypeID = $('#apptmType').val();
+            var doctorId = $('#doctor').val();
+            var date = $('#appointmentDate').val();
+
+            var requestKey = apptmTypeID  + '-' + doctorId + '-' + date;
+
+            if (!apptmTypeID || !doctorId || !date || requestKey === lastRequestKey) {
+                return;
+            }
+
+            lastRequestKey = requestKey;
+
+            $.ajax({
+                url: '/patient/available-times',
+                method: 'GET',
+                data: {
+                    apptmTypeId: apptmTypeID,
+                    doctorId: doctorId,
+                    date: date
+                },
+                success: function (fragmentHtml) {
+                    // Reemplaza solo el contenedor interno
+                    $('#timesContainer').html(fragmentHtml);
+                    $('#availableTimesSection').show();
+
+                    // Vincula el evento 'change' a los nuevos inputs de horario insertados
+                    $('input[name="time"]').on('change', updateSummary);
+    
+                },
+                error: function () {
+                    $('#availableTimesSection').hide();
+                    alert('No fue posible consultar los horarios disponibles.');
+                }
+            });
+        }
+
+        // Escuchar cambios en los inputs
+        $('#apptmType, #location, #doctor, #appointmentDate, input[name="appointmentTime"]').on('change', loadAvailableTimes);
     </script>
     
 

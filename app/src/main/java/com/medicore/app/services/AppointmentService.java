@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import com.medicore.app.models.ApptmType;
 import com.medicore.app.models.Patient;
 import com.medicore.app.repository.AppointmentRepository;
 import com.medicore.app.repository.ApptmTypeRepository;
+import com.medicore.app.repository.PatientRepository;
+import com.medicore.app.utils.UserSession;
 
 import jakarta.transaction.Transactional;
 
@@ -24,6 +27,8 @@ public class AppointmentService {
     private AppointmentRepository repo; 
     @Autowired
     private ApptmTypeRepository apptmTypeRepo;
+    @Autowired
+    private PatientRepository patientRepo;
 
     @Transactional
     public boolean scheduleAppointment(Appointment toSchedule, Patient patient) {
@@ -37,6 +42,19 @@ public class AppointmentService {
          toSchedule.setPatient(patient);
 
          return true;
+    }
+    public boolean scheduleAppointment(String apptmTypeId, String doctorId, String date, String time){
+        LocalDate capturedDate = LocalDate.parse(date);
+        LocalTime capturedTime = LocalTime.parse(time);
+        capturedTime = capturedTime.minusHours(5);
+        OffsetDateTime dateTime = formatDateTime(capturedDate, capturedTime);
+        System.out.println("date time en el service: " + dateTime);
+        Appointment toSchedule = repo.findByEmployeeIdAndDateTime(Integer.parseInt(doctorId), dateTime);
+        Optional<Patient> patient = patientRepo.findByDocumentNumber(UserSession.getDocumentNumber());
+        toSchedule.setPatient(patient.get());
+        toSchedule.setAvailable(false);
+        repo.save(toSchedule);
+        return true;
     }
     public List<Appointment> getAllAppointments() {
         return repo.findAll();
@@ -90,6 +108,9 @@ public class AppointmentService {
 
     public List<Appointment> getScheduledAppointmentsByDoctor() {
         return repo.findByIsAvailableAndEmployeeIsNotNull(false);
+    }
+    public List<Appointment> getAvailableTimes(String apptmTypeId, String doctorId, String date) {
+        return repo.findAppointmentsByDay( Integer.parseInt(apptmTypeId), Integer.parseInt(doctorId), LocalDate.parse(date));
     }
     
 }
