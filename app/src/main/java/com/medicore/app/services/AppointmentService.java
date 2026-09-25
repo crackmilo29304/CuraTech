@@ -112,5 +112,8 @@ public class AppointmentService {
     public List<Appointment> getAvailableTimes(String apptmTypeId, String doctorId, String date) {
         return repo.findAppointmentsByDay( Integer.parseInt(apptmTypeId), Integer.parseInt(doctorId), LocalDate.parse(date));
     }
+    public List<Appointment> getActiveAppointmentsByPatient(Patient patient) {
+        return repo.findByPatientDocumentNumberAndIsAvailable(patient.getDocumentNumber(), false);
+    }
     
 }

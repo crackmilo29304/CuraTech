@@ -54,84 +54,40 @@
                                     <thead class="thead-light">
                                         <tr>
                                             <th>Especialidad</th>
-                                            <th>Médico</th>
-                                           
+                                            <th>Médico</th>                                          
                                             <th>Fecha y Hora</th>
                                             <th class="text-center">Acción</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody>                        
                                         <!-- Cita 1 -->
-                                        <tr>
+                                        <tr th:each="appointment : ${appointments}">
                                             <td>
-                                                <strong>Medicina General</strong>
+                                                <strong th:text="${appointment.apptmType.type}"></strong>
                                             </td>
-                                            <td>Dr. Carlos Mendoza</td>
-                                           
+                                            <td th:text="${appointment.employee.name + ' ' + appointment.employee.lastName}"></td>
                                             <td>
-                                                <i class="bi bi-calendar3 mr-1 text-primary"></i> 15 Sep 2026<br>
-                                                <small class="text-muted"><i class="bi bi-clock mr-1"></i>08:30 AM</small>
+                                                <i class="bi bi-calendar3 mr-1 text-primary"></i>
+                                                <span th:text="${#temporals.format(appointment.dateTime, 'dd/MM/yyyy')}"></span><br>
+                                                <small class="text-muted">
+                                                    <i class="bi bi-clock mr-1"></i>
+                                                    <span th:text="${appointment.formattedTime}"></span>
+                                                </small>
                                             </td>
                                             
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-outline-danger btn-sm shadow-sm" 
                                                         data-toggle="modal" 
                                                         data-target="#cancelModal"
-                                                        data-id="101"
-                                                        data-doctor="Dr. Carlos Mendoza"
-                                                        data-fecha="15 Sep 2026 - 08:30 AM">
+                                                        th:data-id="${appointment.id}"
+                                                        th:data-doctor="${appointment.employee.name + ' ' + appointment.employee.lastName}"
+                                                        th:data-fecha="${appointment.formattedDateTime}">
                                                     <i class="bi bi-x-circle mr-1"></i> Cancelar
                                                 </button>
                                             </td>
                                         </tr>
 
-                                        <!-- Cita 2 -->
-                                        <tr>
-                                            <td>
-                                                <strong>Odontología</strong>
-                                            </td>
-                                            <td>Dra. Andrea Gómez</td>
-                                           
-                                            <td>
-                                                <i class="bi bi-calendar3 mr-1 text-primary"></i> 22 Sep 2026<br>
-                                                <small class="text-muted"><i class="bi bi-clock mr-1"></i>02:00 PM</small>
-                                            </td>
-                                           
-                                            <td class="text-center">
-                                                <button type="button" class="btn btn-outline-danger btn-sm shadow-sm" 
-                                                        data-toggle="modal" 
-                                                        data-target="#cancelModal"
-                                                        data-id="102"
-                                                        data-doctor="Dra. Andrea Gómez"
-                                                        data-fecha="22 Sep 2026 - 02:00 PM">
-                                                    <i class="bi bi-x-circle mr-1"></i> Cancelar
-                                                </button>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Cita 3 -->
-                                        <tr>
-                                            <td>
-                                                <strong>Dermatología</strong>
-                                            </td>
-                                            <td>Dr. Fernando Ríos</td>
-                                            
-                                            <td>
-                                                <i class="bi bi-calendar3 mr-1 text-primary"></i> 05 Oct 2026<br>
-                                                <small class="text-muted"><i class="bi bi-clock mr-1"></i>10:15 AM</small>
-                                            </td>
-                                           
-                                            <td class="text-center">
-                                                <button type="button" class="btn btn-outline-danger btn-sm shadow-sm" 
-                                                        data-toggle="modal" 
-                                                        data-target="#cancelModal"
-                                                        data-id="103"
-                                                        data-doctor="Dr. Fernando Ríos"
-                                                        data-fecha="05 Oct 2026 - 10:15 AM">
-                                                    <i class="bi bi-x-circle mr-1"></i> Cancelar
-                                                </button>
-                                            </td>
-                                        </tr>
+                                
                                     </tbody>
                                 </table>
                             </div>
@@ -171,24 +127,14 @@
                     </div>
                     <div class="modal-body">
                         <p>¿Estás seguro de que deseas cancelar la siguiente cita médica?</p>
+                        <p class="mb-1"><strong>Médico:</strong> <span id="modalDoctor">---</span></p>
+                        <p class="mb-0"><strong>Fecha y hora:</strong> <span id="modalFecha">---</span></p>
                         
-                        <div class="card bg-light border-left-danger mb-3">
-                            <div class="card-body py-2">
-                                <p class="mb-1"><strong>Médico:</strong> <span id="modalDoctor">---</span></p>
-                                <p class="mb-0"><strong>Fecha y Hora:</strong> <span id="modalFecha">---</span></p>
-                            </div>
-                        </div>
-
                         <!-- Campo oculto para enviar el ID de la cita a Spring Boot -->
-                        <input type="hidden" name="appointmentId" id="appointmentIdInput" value="">
-
-                        <div class="form-group">
-                            <label for="cancelReason" class="col-form-label font-weight-bold">Motivo de la cancelación (Opcional):</label>
-                            <textarea class="form-control" id="cancelReason" name="reason" rows="3" placeholder="Indica brevemente el motivo de tu cancelación..."></textarea>
-                        </div>
+                        <input type="hidden" name="appointmentId" id="appointmentIdInput" value="">     
                     </div>
+
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Regresar</button>
                         <button type="submit" class="btn btn-danger">Confirmar Cancelación</button>
                     </div>
                 </form>
@@ -206,14 +152,39 @@
     <script>
         $('#cancelModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
-            var id = button.data('id');
-            var doctor = button.data('doctor');
-            var fecha = button.data('fecha');
-
             var modal = $(this);
-            modal.find('#appointmentIdInput').val(id);
-            modal.find('#modalDoctor').text(doctor);
-            modal.find('#modalFecha').text(fecha);
+            modal.find('#appointmentIdInput').val(button.data('id'));
+            modal.find('#modalDoctor').text(button.data('doctor'));
+            modal.find('#modalFecha').text(button.data('fecha'));
+        });
+    </script>
+
+    <!-- Script para manejar el envío del formulario -->
+    <script>
+        $('#cancelModal form').on('submit', function (event) {
+            event.preventDefault();
+
+            var form = $(this);
+            var submitButton = form.find('button[type="submit"]');
+
+            submitButton.prop('disabled', true);
+
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method') || 'POST',
+                data: form.serialize(),
+                success: function () {
+                    $('#cancelModal').modal('hide');
+                    // Aquí puedes actualizar la tabla o mostrar un mensaje.
+                },
+                error: function (xhr) {
+                    alert('No fue posible cancelar la cita.');
+                    console.error(xhr.responseText);
+                },
+                complete: function () {
+                    submitButton.prop('disabled', false);
+                }
+            });
         });
     </script>
 
