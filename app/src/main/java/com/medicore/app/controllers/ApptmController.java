@@ -14,10 +14,6 @@ import com.medicore.app.models.ApptmType;
 import com.medicore.app.services.AppointmentService;
 
 
-
-
-
-
 @Controller
 @RequestMapping("/appointments")
 public class ApptmController {
@@ -30,8 +26,6 @@ public class ApptmController {
         return apptmTypes;
     }
 
-    
-
     @PostMapping("/schedule-apptm")
     public String scheduleApptm(@RequestParam String apptmTypeId, @RequestParam String doctorId, @RequestParam String date, @RequestParam String time, Model model) {
         appointmentService.scheduleAppointment(apptmTypeId, doctorId, date, time);
@@ -39,6 +33,11 @@ public class ApptmController {
         return "redirect:/patient/appointments/schedule";
     }
     
+    @PostMapping("/cancel")
+    public String cancelAppointment(@RequestParam int appointmentId) {
+        appointmentService.cancelAppointment(appointmentId);
+        return "redirect:/patient/appointments/cancel";
+    }
     
     
 }

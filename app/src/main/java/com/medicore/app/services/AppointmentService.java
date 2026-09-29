@@ -92,9 +92,15 @@ public class AppointmentService {
         return true;
     }
 
-    public boolean cancelAppointment(Appointment toCancel){
+    public boolean cancelAppointment(int id){
+        Appointment toCancel = repo.findById(id).orElse(null);
+        if (toCancel == null) {
+            System.out.println("Cita no encontrada");
+            return false;
+        }
         toCancel.setAvailable(true);
         toCancel.setPatient(null);
+        repo.save(toCancel);
         return true;
     }
 
@@ -111,6 +117,9 @@ public class AppointmentService {
     }
     public List<Appointment> getAvailableTimes(String apptmTypeId, String doctorId, String date) {
         return repo.findAppointmentsByDay( Integer.parseInt(apptmTypeId), Integer.parseInt(doctorId), LocalDate.parse(date));
+    }
+    public List<Appointment> getActiveAppointmentsByPatient(Patient patient) {
+        return repo.findByPatientDocumentNumberAndIsAvailable(patient.getDocumentNumber(), false);
     }
     
 }

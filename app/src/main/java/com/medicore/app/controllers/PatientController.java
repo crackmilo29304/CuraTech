@@ -120,7 +120,10 @@ public class PatientController {
         return "patient/appointments/schedule"; // Busca schedule.html en templates/
     }
     @GetMapping("/appointments/cancel")
-    public String showCancelView() {
+    public String showCancelView(Model model) {
+        Patient patient = patientService.getPatientByDocumentNumber(UserSession.getDocumentNumber());
+        List<Appointment> appointments = appointmentService.getActiveAppointmentsByPatient(patient);
+        model.addAttribute("appointments", appointments);
         return "patient/appointments/cancel"; // Busca cancel.html en templates/
     }
 

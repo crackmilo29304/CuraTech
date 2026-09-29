@@ -32,5 +32,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
         @Param("date") LocalDate date);
 
     Appointment findByEmployeeIdAndDateTime(int employeeId, OffsetDateTime dateTime);
+    List<Appointment> findByPatientDocumentNumberAndIsAvailable(String documentNumber, boolean isAvailable);
     
 }
