@@ -60,7 +60,9 @@ public class EmployeeController {
     }
     
     @GetMapping("/search-patients-view")
-    public String showSearchPatientsView() {
+    public String showSearchPatientsView(Model model) {
+        List<Patient> foundPatients = new ArrayList<>();
+        model.addAttribute("foundPatients", foundPatients);
         return "employee/searchPatients"; // Busca searchPatients.html en templates/
     }
     @GetMapping("/search-patients")
