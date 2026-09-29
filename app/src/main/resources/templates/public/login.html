@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión - Portal Médico</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), 
+                  url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+    }
+
+    .login-container {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      color: #1a365d;
+      font-size: 1.8rem;
+      margin-bottom: 0.4rem;
+    }
+
+    /* Badge para mostrar visualmente el rol activo */
+    .role-badge {
+      display: inline-block;
+      background-color: #e2e8f0;
+      color: #2d3748;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      text-transform: capitalize;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.4rem;
+      color: #4a5568;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #cbd5e0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-group input:focus {
+      border-color: #2b6cb0;
+      box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.2);
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: #4a5568;
+      cursor: pointer;
+    }
+
+    .forgot-password {
+      color: #2b6cb0;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.85rem;
+      background-color: #2b6cb0;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #2c5282;
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.2rem;
+      color: #718096;
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      color: #2d3748;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="login-container">
+    <div class="header">
+      <h1>Iniciar Sesión</h1>
+      <!-- Muestra el rol recuperado o un valor por defecto -->
+      <span class="role-badge" id="roleDisplay">Ingreso General</span>
+    </div>
+
+    <form th:action="@{/login/validate}" method="post">
+      <div class="form-group">
+        <label for="documentNumber">Número de documento</label>
+        <input type="text" id="documentNumber" name="documentNumber" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" required>
+      </div>
+
+      <div class="form-actions">
+        <label class="remember-me">
+          <input type="checkbox"> Recordarme
+        </label>
+        <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+      </div>
+      
+      <button type="submit" class="btn-submit">Ingresar</button>
+    </form>
+
+    <a href="index.html" class="back-link">← Cambiar de rol</a>
+  </main>
+
+</body>
+</html>

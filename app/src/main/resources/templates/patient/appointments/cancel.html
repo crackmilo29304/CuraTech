@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>MediCore - Cancelar Cita Médica</title>
+
+    <!-- FontAwesome y Google Fonts -->
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- SB Admin 2 y Bootstrap Icons -->
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body id="page-top">
+
+    <div id="wrapper">
+
+        <!-- Sidebar (Inserta tu fragmento patientSidebar aquí) -->
+        <div th:replace="~{fragments/patientSidebar :: patientSidebar}"></div>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content" class="p-4">
+
+                <div class="container-fluid">
+
+                    <!-- Encabezado de la página -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">
+                            <i class="bi bi-calendar-x text-danger mr-2"></i>Cancelar Cita Médica
+                        </h1>
+                    </div>
+
+                   
+
+                    <!-- Tarjeta Principal: Listado de Citas Programadas -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 bg-white d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Próximas Citas Programadas</h6>
+                            <span class="badge badge-primary px-3 py-2" th:text="|Citas activas:  ${#lists.size(appointments)}|"></span>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle" width="100%" cellspacing="0">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Especialidad</th>
+                                            <th>Médico</th>                                          
+                                            <th>Fecha y Hora</th>
+                                            <th class="text-center">Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>                        
+                                        <!-- Cita 1 -->
+                                        <tr th:each="appointment : ${appointments}">
+                                            <td>
+                                                <strong th:text="${appointment.apptmType.type}"></strong>
+                                            </td>
+                                            <td th:text="${appointment.employee.name + ' ' + appointment.employee.lastName}"></td>
+                                            <td>
+                                                <i class="bi bi-calendar3 mr-1 text-primary"></i>
+                                                <span th:text="${#temporals.format(appointment.dateTime, 'dd/MM/yyyy')}"></span><br>
+                                                <small class="text-muted">
+                                                    <i class="bi bi-clock mr-1"></i>
+                                                    <span th:text="${appointment.formattedTime}"></span>
+                                                </small>
+                                            </td>
+                                            
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-outline-danger btn-sm shadow-sm" 
+                                                        data-toggle="modal" 
+                                                        data-target="#cancelModal"
+                                                        th:data-id="${appointment.id}"
+                                                        th:data-doctor="${appointment.employee.name + ' ' + appointment.employee.lastName}"
+                                                        th:data-fecha="${appointment.formattedDateTime}">
+                                                    <i class="bi bi-x-circle mr-1"></i> Cancelar
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white shadow-sm mt-auto">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>MediCore System &copy; 2026</span>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+
+    </div>
+
+    <!-- Modal de Confirmación para Cancelar Cita -->
+    <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form th:action="@{/appointments/cancel}" method="POST">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="cancelModalLabel">
+                            <i class="bi bi-exclamation-octagon-fill mr-2"></i>Confirmar Cancelación
+                        </h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro de que deseas cancelar la siguiente cita médica?</p>
+                        <p class="mb-1"><strong>Médico:</strong> <span id="modalDoctor">---</span></p>
+                        <p class="mb-0"><strong>Fecha y hora:</strong> <span id="modalFecha">---</span></p>
+                        
+                        <!-- Campo oculto para enviar el ID de la cita a Spring Boot -->
+                        <input type="hidden" name="appointmentId" id="appointmentIdInput" value="">     
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Confirmar Cancelación</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de Bootstrap 4 y jQuery -->
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+    <script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+    <!-- Script para pasar datos dinámicos al Modal -->
+    <script>
+        $('#cancelModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            modal.find('#appointmentIdInput').val(button.data('id'));
+            modal.find('#modalDoctor').text(button.data('doctor'));
+            modal.find('#modalFecha').text(button.data('fecha'));
+        });
+    </script>
+
+    <!-- Script para manejar el envío del formulario -->
+    <script>
+        $('#cancelModal form').on('submit', function (event) {
+            event.preventDefault();
+
+            var form = $(this);
+            var submitButton = form.find('button[type="submit"]');
+
+            submitButton.prop('disabled', true);
+
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method') || 'POST',
+                data: form.serialize(),
+                success: function () {
+                    $('#cancelModal').modal('hide');
+                    // Aquí puedes actualizar la tabla o mostrar un mensaje.
+                },
+                error: function (xhr) {
+                    alert('No fue posible cancelar la cita.');
+                    console.error(xhr.responseText);
+                },
+                complete: function () {
+                    submitButton.prop('disabled', false);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
