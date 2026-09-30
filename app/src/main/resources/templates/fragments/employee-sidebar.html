@@ -1,9 +1,9 @@
 <!-- Se define el fragmento con un parámetro -->
-<aside th:fragment="adminSidebar" class="adminSidebar">
+<aside th:fragment="employeeSidebar" class="employeeSidebar">
    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -15,9 +15,9 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" th:href="@{/admin}">
+                <a class="nav-link" th:href="@{/employee}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Admin</span></a>
+                    <span>Employee</span></a>
             </li>
 
             <!-- Divider -->
@@ -30,36 +30,29 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/admin/registerEmployees}">
+                <a class="nav-link" th:href="@{/employee/register-patients}">
                     <i class="bi bi-briefcase"></i>
-                    <span>Registrar empleados</span>
+                    <span>Registrar pacientes</span>
                 </a>
                 
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/admin/searchEmployees}">
+                <a class="nav-link" th:href="@{/employee/search-patients-view}">
                     <i class="bi bi-search"></i>
-                    <span>Buscar empleados</span>
+                    <span>Buscar pacientes</span>
                 </a>
                 
             </li>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/admin/medicineStock}">
+                <a class="nav-link" th:href="@{/employee/create-prescription-view}">
                     <i class="bi bi-backpack2-fill"></i>
-                    <span>Stock medicamentos</span>
+                    <span>Generar prescripción</span>
                 </a>
                 
-            </li>
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/admin/deleteUsers}">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Eliminar usuarios</span></a>
             </li>
 
 

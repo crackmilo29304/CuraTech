@@ -28,8 +28,7 @@ public class ApptmController {
 
     @PostMapping("/schedule-apptm")
     public String scheduleApptm(@RequestParam String apptmTypeId, @RequestParam String doctorId, @RequestParam String date, @RequestParam String time, Model model) {
-        appointmentService.scheduleAppointment(apptmTypeId, doctorId, date, time);
-            
+        appointmentService.scheduleAppointment(apptmTypeId, doctorId, date, time);    
         return "redirect:/patient/appointments/schedule";
     }
     

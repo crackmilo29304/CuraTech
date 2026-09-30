@@ -15,17 +15,13 @@ public class LoginService {
     public String checkLogin(String documentNumber, String password) {
         User user = userRepository.findByDocumentNumberAndPassword(documentNumber, password);
         if(user == null) {
-            //implement exception
-            System.out.println("Usuario no encontrado o contraseña incorrecta");
-            return null;
+            throw new IllegalArgumentException("Usuario no encontrado o contraseña incorrecta");
         }
         if(user.getRole().equals(UserSession.getRole())){
             return UserSession.getRole();
         }
         else {
-            //implement exception
-            System.out.println("El rol seleccionado no coincide con el rol del usuario");
-            return null;
+            throw new IllegalStateException("El rol seleccionado no coincide con el rol del usuario");
         }
 
     }

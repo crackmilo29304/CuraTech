@@ -9,24 +9,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminController {
     @GetMapping
     public String showAdminMenu() {
-        return "admin/adminMenu"; // Busca home.html en templates/
+        return "admin/admin-menu"; // Busca home.html en templates/
     }
-    @GetMapping("/registerEmployees")
+    @GetMapping("/register-employees")
     public String showRegisterEmployeesView() {
-        return "admin/registerEmployees"; // Busca registerEmployees.html en templates/
+        return "admin/register-employees"; // Busca registerEmployees.html en templates/
     }
 
-    @GetMapping("/searchEmployees")
+    @GetMapping("/search-employees")
     public String showSearchEmployeesView() {
-        return "admin/searchEmployees"; // Busca searchEmployees.html en templates/
+        return "admin/search-employees"; // Busca searchEmployees.html en templates/
     }
 
-    @GetMapping("/medicineStock")
+    @GetMapping("/medicine-stock")
     public String showMedicineStockView() {
-        return "admin/medicineStock"; // Busca medicinesStock.html en templates/
+        return "admin/medicine-stock"; // Busca medicinesStock.html en templates/
     }
-    @GetMapping("/deleteUsers")
+    @GetMapping("/delete-users")
     public String showDeleteUsersView() {
-        return "admin/deleteUsers"; // Busca deleteUsers.html en templates/
+        return "admin/delete-users"; // Busca deleteUsers.html en templates/
     }
 }

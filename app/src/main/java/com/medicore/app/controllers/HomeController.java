@@ -17,7 +17,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "public/rolSelection"; // Busca home.html en templates/
+        return "public/rol-selection"; // Busca home.html en templates/
     }
 
     @GetMapping("/login")

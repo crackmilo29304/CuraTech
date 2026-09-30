@@ -3,12 +3,15 @@ package com.medicore.app.config;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.DayOfWeek;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.context.event.EventListener;
 
 import com.medicore.app.models.Appointment;
 import com.medicore.app.models.ApptmType;
@@ -19,6 +22,8 @@ import com.medicore.app.repository.ApptmTypeRepository;
 import com.medicore.app.repository.EmployeeRepository;
 import com.medicore.app.repository.ScheduleRepository;
 import com.medicore.app.services.AppointmentService;
+
+import jakarta.transaction.Transactional;
 
 
 @Component
@@ -44,21 +49,35 @@ public class ScheduleTaskService {
         this.appointmentService = appointmentService;
     }
 
-    @Scheduled(cron = "0 59 23 * * SUN")
+    @Scheduled(cron = "0 59 23 * * SUN", zone = "America/Bogota")
+    @Transactional
     public void generateWeeklyAppointments() {
-        appointmentRepo.deleteAll();
-        scheduleRepo.deleteAll();
-
-        createSchedule();
-        createAppointments();
+        generateWeekIfMissing(LocalDate.now().plusWeeks(1));
     }
 
-    private void createSchedule() {
+    @EventListener(ApplicationReadyEvent.class)
+    @Transactional
+    public void generateCurrentWeekAppointments() {
+        generateWeekIfMissing(LocalDate.now());
+    }
+
+    private void generateWeekIfMissing(LocalDate referenceDate) {
+        LocalDate monday = referenceDate.with(DayOfWeek.MONDAY);
+        LocalDate sunday = monday.plusDays(6);
+
+        if (scheduleRepo.existsByDateBetween(monday, sunday)) {
+            return;
+        }
+
+        createSchedule(monday);
+        createAppointments(monday, sunday);
+    }
+
+    private void createSchedule(LocalDate monday) {
         List<Employee> employees = employeeRepo.findAll();
 
         for (Employee employee : employees) {
-            // reinitialize variable at each iteration
-            LocalDate day = LocalDate.now().plusDays(1);
+            LocalDate day = monday;
 
             for (int i = 0; i < 7; i++) {
                 LocalTime beginning = getRandomWorkHour();
@@ -84,8 +103,8 @@ public class ScheduleTaskService {
         return LocalTime.of(randomHour, 0);
     }
 
-    private void createAppointments() {
-        List<Schedule> schedules = scheduleRepo.findAll();
+    private void createAppointments(LocalDate monday, LocalDate sunday) {
+        List<Schedule> schedules = scheduleRepo.findByDateBetween(monday, sunday);
 
         for (Schedule schedule : schedules) {
             Employee employee = schedule.getEmployee();
